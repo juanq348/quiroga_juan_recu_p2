@@ -1,6 +1,8 @@
 const express = require("express")
 const app = express()
 
+app.use(express.json())
+
 const listaEstudiantes = []
 
 app.get("/students", (req, res) =>{
@@ -55,8 +57,20 @@ app.put("/students/:id", (req,res) =>{
     listaEstudiantes[findStudent].age = +age
     listaEstudiantes[findStudent].curse = curse.trim()
 
-    res.json({message:"Estudiante editado con éxito", "Estudiante editado":  listaEstudiantes[findStudent]})
+    res.json({message:"Estudiante editado con éxito", "Estudiante editado": listaEstudiantes[findStudent]})
 })
 
+app.delete("/students/:id", (req, res) =>{
+    const studentID = req.params.id
+    const studentIndex = listaEstudiantes.findIndex((e) => e.id === +studentID)
+
+    if(studentIndex === -1){
+        return res.status(404).json({message:"El alumno no fue encontrado"})
+    }
+
+    const studentDelete = listaEstudiantes.splice(studentIndex, 1)
+
+    res.json({message:"Estudiante eliminado con éxito", "Estudiante eliminado": studentDelete[0]})
+})
 
 app.listen(4321, console.log("El servidor esta funcionando en el puerto 4321"))
