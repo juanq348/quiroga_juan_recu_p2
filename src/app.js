@@ -28,6 +28,14 @@ app.post("/students", (req,res) =>{
         return res.status(400).json({message:"No puede ingresar valores nulos"})
     }
 
+    if (age < 5 || age >100){
+        return res.status(400).json({message:"Ingrese una edad válida"})
+    }
+
+    if (listaEstudiantes.some((e) => e.fullName === fullName.trim())){
+        return res.status(400).json({message: "Ese estudiante ya se encuentra en la lista"})
+    }
+
     listaEstudiantes.push(
         {
             id: idUnico,
@@ -37,7 +45,7 @@ app.post("/students", (req,res) =>{
         }
     )
 
-    res.json({message:"Estudiante agregado con éxito"})
+    res.status(201).json({message:"Estudiante agregado con éxito"})
 })
 
 app.put("/students/:id", (req,res) =>{
@@ -53,11 +61,15 @@ app.put("/students/:id", (req,res) =>{
         return res.status(400).json({message:"No puede ingresar valores nulos"})
     }
 
+    if (age < 5 || age >100){
+        return res.status(400).json({message:"Ingrese una edad válida"})
+    }
+
     listaEstudiantes[findStudent].fullName = fullName.trim()
     listaEstudiantes[findStudent].age = +age
     listaEstudiantes[findStudent].curse = curse.trim()
 
-    res.json({message:"Estudiante editado con éxito", "Estudiante editado": listaEstudiantes[findStudent]})
+    res.status(200).json({message:"Estudiante editado con éxito", "Estudiante editado": listaEstudiantes[findStudent]})
 })
 
 app.delete("/students/:id", (req, res) =>{
@@ -70,7 +82,7 @@ app.delete("/students/:id", (req, res) =>{
 
     const studentDelete = listaEstudiantes.splice(studentIndex, 1)
 
-    res.json({message:"Estudiante eliminado con éxito", "Estudiante eliminado": studentDelete[0]})
+    res.status(200).json({message:"Estudiante eliminado con éxito", "Estudiante eliminado": studentDelete[0]})
 })
 
 app.listen(4321, console.log("El servidor esta funcionando en el puerto 4321"))
