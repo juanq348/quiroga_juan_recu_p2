@@ -56,7 +56,7 @@ const actualizarEstudiante =  (req,res) =>{
         return res.status(400).json({message:"No puede ingresar valores nulos"})
     }
 
-    if (age < 5 || age >100){
+    if (age < 6 || age >100){
         return res.status(400).json({message:"Ingrese una edad válida"})
     }
 
